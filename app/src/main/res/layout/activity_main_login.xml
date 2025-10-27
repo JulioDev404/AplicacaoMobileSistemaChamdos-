@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLogin"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#0B1220"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainLogin">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/bg_card"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:elevation="6dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="16dp"
+        android:clipToOutline="true">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_launcher_foreground"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            app:tint="#3A6EFF" />
+
+        <TextView
+            android:text="Sistema de Chamados"
+            android:textColor="#3A6EFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="Acesse sua conta para gerenciar chamados"
+            android:textColor="#B0B6C3"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:layout_marginBottom="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edtEmail"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888EA3"
+
+            android:drawablePadding="10dp"
+            android:background="@drawable/bg_input"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/edtSenha"
+            android:hint="Senha"
+            android:inputType="textPassword"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888EA3"
+
+            android:drawablePadding="10dp"
+            android:background="@drawable/bg_input"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp">
+
+            <CheckBox
+                android:text="Lembrar de mim"
+                android:textColor="#B0B6C3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:text="Esqueci minha senha"
+                android:textColor="#3A6EFF"
+                android:textSize="13sp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:text="Acessar Sistema"
+            android:backgroundTint="#3A6EFF"
+            android:textColor="#FFFFFF"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button" />
+
+    </LinearLayout>
+
+</LinearLayout>
