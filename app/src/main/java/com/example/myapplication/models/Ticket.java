@@ -12,6 +12,7 @@ public class Ticket {
         this.description = description;
         this.status = status;
         this.createdAt = createdAt;
+
         this.owner = owner;
     }
 

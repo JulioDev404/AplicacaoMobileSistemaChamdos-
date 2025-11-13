@@ -1,10 +1,18 @@
 package com.example.myapplication.models;
 
-public class Usuario {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
+    @SerializedName("id")
     private int id;
+    @SerializedName("nome")
     private String nome;
+    @SerializedName("email")
     private String email;
-    private String depatamento;
+    @SerializedName("tipoUsuario")
+    private String tipoUsuario;
 
     public int getId() {
         return id;
@@ -18,24 +26,7 @@ public class Usuario {
         return email;
     }
 
-    public String getDepatamento() {
-        return depatamento;
+    public String getTipoUsuario() {
+        return tipoUsuario;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setDepatamento(String depatamento) {
-        this.depatamento = depatamento;
-    }
-
 }

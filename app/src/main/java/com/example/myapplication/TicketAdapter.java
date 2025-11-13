@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.content.Context; // <-- MUDANÇA 1: Importar Context
+import android.content.Intent;  // <-- MUDANÇA 2: Importar Intent
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +17,11 @@ import java.util.List;
 public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketViewHolder> {
 
     private List<Ticket> tickets;
+    private Context context; // <-- MUDANÇA 3: Adicionar variável de Contexto
 
-    public TicketAdapter(List<Ticket> tickets) {
+    // <-- MUDANÇA 4: Atualizar o construtor
+    public TicketAdapter(Context context, List<Ticket> tickets) {
+        this.context = context;
         this.tickets = tickets;
     }
 
@@ -35,6 +40,24 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         holder.tvDescription.setText(ticket.getDescription());
         holder.tvStatus.setText(ticket.getStatus());
         holder.tvMeta.setText(ticket.getCreatedAt() + " • " + ticket.getOwner());
+
+        // <-- MUDANÇA 5: Adicionar o "ouvinte" de clique aqui
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Pega o ticket da posição clicada
+                Ticket clickedTicket = tickets.get(holder.getAdapterPosition());
+
+                // Cria a "viagem" para a tela de detalhes
+                Intent intent = new Intent(context, DetalheChamadoActivity.class);
+
+                // Anexa o ID do ticket na "viagem"
+                // (Assumindo que seu Ticket tem um método getId())
+
+                // Inicia a nova tela
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

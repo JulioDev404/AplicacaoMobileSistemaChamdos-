@@ -1,14 +1,27 @@
 package com.example.myapplication.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class LoginResponse {
-    private int id;
-    private String nome;
-    private String email;
-    private String tipoUsuario;
 
-    public int getId(){return this.id;}
-    public String getNome(){return this.nome;}
-    public String getEmail(){return this.email;}
-    public String getTipoUsuario(){return  this.tipoUsuario;}
+    @SerializedName("sucesso")
+    private boolean sucesso;
 
+    @SerializedName("usuario")
+    private Usuario usuario;
+
+    @SerializedName("mensagem")
+    private String mensagem;
+
+    public boolean isSucesso() {
+        return sucesso;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
 }

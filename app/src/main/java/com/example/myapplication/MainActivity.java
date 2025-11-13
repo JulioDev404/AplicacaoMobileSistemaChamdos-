@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.models.Ticket;
+import com.example.myapplication.models.Usuario;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         tickets.add(new Ticket("Atualização", "Solicitar atualização do app", "Fechado", "15/09", "Carlos"));
 
         // 3. Adapter
-        TicketAdapter adapter = new TicketAdapter(tickets);
+        TicketAdapter adapter = new TicketAdapter(this,tickets);
         recyclerTickets.setAdapter(adapter);
 
         // 4. Ação do FAB (chatbot)
