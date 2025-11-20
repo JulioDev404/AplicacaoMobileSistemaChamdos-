@@ -67,7 +67,7 @@ public class MainLogin extends AppCompatActivity {
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
         LoginRequest loginRequest = new LoginRequest(email,senha);
 
-        Call<LoginResponse> call = apiService.getLogin(loginRequest);
+        Call<LoginResponse> call = apiService.postlogin(loginRequest);
 
         call.enqueue(
                 new Callback<LoginResponse>() {
@@ -75,35 +75,27 @@ public class MainLogin extends AppCompatActivity {
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
 
                         if (!response.isSuccessful()) {
-                            Toast.makeText(MainLogin.this,
-                                    "Erro no servidor: " + response.code(),
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainLogin.this, "Erro no servidor", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-                        LoginResponse login = response.body();
+                        LoginResponse loginResponse = response.body();
 
-                        if (login == null) {
-                            Toast.makeText(MainLogin.this,
-                                    "Resposta vazia do servidor",
-                                    Toast.LENGTH_SHORT).show();
+                        if (loginResponse == null || !loginResponse.isSucesso()) {
+                            Toast.makeText(MainLogin.this, "Login inválido", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-                        if (login.isSucesso()) {
-                            Usuario usuario = login.getUsuario();
-                            Toast.makeText(MainLogin.this,
-                                    "Bem-vindo " + usuario.getNome(),
-                                    Toast.LENGTH_SHORT).show();
-                            Intent loginIntent = new Intent(MainLogin.this, MainActivity.class);
-                            loginIntent.putExtra("email",usuario.getEmail());
-                            startActivity(loginIntent);
-                            finish();
-                        } else {
-                            Toast.makeText(MainLogin.this,
-                                    login.getMensagem() != null ? login.getMensagem() : "Login inválido",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                        // PEGAR O TOKEN
+                        String token = loginResponse.getToken();
+
+                        // SALVAR O TOKEN
+                        getSharedPreferences("app", MODE_PRIVATE)
+                                .edit()
+                                .putString("jwt", token)
+                                .apply();
+
+                        Toast.makeText(MainLogin.this, "Login bem sucedido!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -116,3 +108,4 @@ public class MainLogin extends AppCompatActivity {
     }
 }
 
+    

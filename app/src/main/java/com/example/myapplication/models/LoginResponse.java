@@ -9,12 +9,17 @@ public class LoginResponse {
 
     @SerializedName("usuario")
     private Usuario usuario;
-
+    @SerializedName("token")
+    private String Token;
     @SerializedName("mensagem")
     private String mensagem;
 
     public boolean isSucesso() {
         return sucesso;
+    }
+
+    public String getToken() {
+        return Token;
     }
 
     public Usuario getUsuario() {
