@@ -54,9 +54,6 @@ public class MainLogin extends AppCompatActivity {
             fazerLogin(email,senha);
         });
 
-
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainLogin), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -64,7 +61,7 @@ public class MainLogin extends AppCompatActivity {
         });
     }
     private void fazerLogin(String email, String senha){
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getClient(MainLogin.this).create(ApiService.class);
         LoginRequest loginRequest = new LoginRequest(email,senha);
 
         Call<LoginResponse> call = apiService.postlogin(loginRequest);

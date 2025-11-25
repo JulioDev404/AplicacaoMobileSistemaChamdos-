@@ -9,58 +9,100 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.models.Ticket;
+import com.example.myapplication.models.TicketResponse;
 import com.example.myapplication.models.Usuario;
+import com.example.myapplication.storage.StorageLogin;
+import com.example.myapplication.services.ApiService;
+import com.example.myapplication.services.AuthInterceptor;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerTickets;
     private FloatingActionButton fabChatbot;
+    private TicketAdapter adapter;
+    private List<Ticket> listaTickets = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        // 2. Pegue a Intent e verifique o login AQUI DENTRO
         String email = getIntent().getStringExtra("email");
 
-        // 3. Se não houver email redireciona para o login e pare a execução
         if (email == null) {
-            Intent loginIntent = new Intent(MainActivity.this, MainLogin.class);
-            startActivity(loginIntent);
+            startActivity(new Intent(MainActivity.this, MainLogin.class));
             finish();
             return;
         }
 
-        //seta o layout
         setContentView(R.layout.activity_main);
+
         recyclerTickets = findViewById(R.id.recyclerTickets);
         fabChatbot = findViewById(R.id.fabChatbot);
-
-
-
-        // 1. LayoutManager
         recyclerTickets.setLayoutManager(new LinearLayoutManager(this));
 
-        // 2. Lista de chamados de exemplo
-        List<Ticket> tickets = new ArrayList<>();
-        tickets.add(new Ticket("Erro no sistema", "Usuário não consegue logar", "Aberto", "12/09", "João"));
-        tickets.add(new Ticket("Falha na impressora", "Impressora não imprime", "Em andamento", "13/09", "Maria"));
-        tickets.add(new Ticket("Atualização", "Solicitar atualização do app", "Fechado", "15/09", "Carlos"));
-
-        // 3. Adapter
-        TicketAdapter adapter = new TicketAdapter(this,tickets);
+        adapter = new TicketAdapter(this, listaTickets);
         recyclerTickets.setAdapter(adapter);
 
-        // 4. Ação do FAB (chatbot)
-        fabChatbot.setOnClickListener(new View.OnClickListener() {
+        carregarTickets();
+
+        fabChatbot.setOnClickListener(v ->
+                Toast.makeText(MainActivity.this, "Abrir chat...", Toast.LENGTH_SHORT).show()
+        );
+    }
+
+    private void carregarTickets() {
+
+        StorageLogin storageLogin = new StorageLogin(MainActivity.this);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new AuthInterceptor(MainActivity.this))
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://eleanore-sporophytic-tautly.ngrok-free.dev/")
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ApiService ticketService = retrofit.create(ApiService.class);
+
+        ticketService.getTickets().enqueue(new Callback<List<TicketResponse>>() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Abrir chat...", Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<List<TicketResponse>> call, Response<List<TicketResponse>> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+                    listaTickets.clear();
+
+                    for (TicketResponse t : response.body()) {
+                        listaTickets.add(new Ticket(
+                                t.getTitulo(),
+                                t.getDescricao(),
+                                t.getStatus(),
+                                t.getCriadoEm(),
+                                "Sistema"
+                        ));
+                    }
+
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TicketResponse>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Erro: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
