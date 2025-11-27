@@ -6,7 +6,7 @@ public class TicketResponse {
     private String descricao;
     private int solicitanteId;
     private String status;      // TicketStatus (enum: 1=A,2=..., etc.)
-    private int prioridade;  // PriorityLevel (enum)
+    private String prioridade;  // PriorityLevel (enum)
     private String criadoEm;
     private String atualizadoEm;
 
@@ -24,7 +24,7 @@ public class TicketResponse {
 
     public String getStatus() { return status; }
 
-    public int getPrioridade() { return prioridade; }
+    public String getPrioridade() { return prioridade; }
 
     public String getCriadoEm() { return criadoEm; }
 

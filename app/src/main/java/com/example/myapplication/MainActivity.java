@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.models.Ticket;
 import com.example.myapplication.models.TicketResponse;
-import com.example.myapplication.models.Usuario;
-import com.example.myapplication.storage.StorageLogin;
 import com.example.myapplication.services.ApiService;
 import com.example.myapplication.services.AuthInterceptor;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,7 +23,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerTickets;
@@ -39,9 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        String email = getIntent().getStringExtra("email");
+        // --- VERIFICA O TOKEN ---
+        String token = getSharedPreferences("app", MODE_PRIVATE)
+                .getString("jwt", null);
 
-        if (email == null) {
+        if (token == null || token.isEmpty()) {
+            // Sem token → volta para login
             startActivity(new Intent(MainActivity.this, MainLogin.class));
             finish();
             return;
@@ -65,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void carregarTickets() {
 
-        StorageLogin storageLogin = new StorageLogin(MainActivity.this);
-
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(MainActivity.this))
                 .build();
@@ -82,6 +79,18 @@ public class MainActivity extends AppCompatActivity {
         ticketService.getTickets().enqueue(new Callback<List<TicketResponse>>() {
             @Override
             public void onResponse(Call<List<TicketResponse>> call, Response<List<TicketResponse>> response) {
+
+                // --- TOKEN INVÁLIDO (401) ---
+                if (response.code() == 401) {
+                    getSharedPreferences("app", MODE_PRIVATE)
+                            .edit()
+                            .remove("jwt")
+                            .apply();
+
+                    startActivity(new Intent(MainActivity.this, MainLogin.class));
+                    finish();
+                    return;
+                }
 
                 if (response.isSuccessful() && response.body() != null) {
                     listaTickets.clear();

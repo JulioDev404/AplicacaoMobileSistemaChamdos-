@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import static android.widget.Toast.LENGTH_LONG;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -92,7 +94,13 @@ public class MainLogin extends AppCompatActivity {
                                 .putString("jwt", token)
                                 .apply();
 
+
                         Toast.makeText(MainLogin.this, "Login bem sucedido!", Toast.LENGTH_SHORT).show();
+
+                        startActivity(new Intent(MainLogin.this, MainActivity.class));
+                        finish();
+
+
                     }
 
                     @Override

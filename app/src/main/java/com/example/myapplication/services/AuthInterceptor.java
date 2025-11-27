@@ -13,12 +13,13 @@ public class AuthInterceptor implements Interceptor {
     private SharedPreferences prefs;
 
     public AuthInterceptor(Context context) {
-        prefs = context.getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE);
+        // mesmo nome usado no login
+        prefs = context.getSharedPreferences("app", Context.MODE_PRIVATE);
     }
 
     @Override
     public okhttp3.Response intercept(Chain chain) throws IOException {
-        String token = prefs.getString("token", "");
+        String token = prefs.getString("jwt", null);
 
         Request request = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer " + token)
