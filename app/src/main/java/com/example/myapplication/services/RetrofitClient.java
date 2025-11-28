@@ -17,14 +17,16 @@ public class RetrofitClient {
                 .addInterceptor(new AuthInterceptor(context))
                 .build();
 
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(URL_BASE)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
+        // SEM CACHÊ! Sempre recria.
+        return new Retrofit.Builder()
+                .baseUrl(URL_BASE)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
 
-        return retrofit;
+
+    public static void reset() {
+        retrofit = null;
     }
 }

@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
                     for (TicketResponse t : response.body()) {
                         listaTickets.add(new Ticket(
+                                t.getId(),
                                 t.getTitulo(),
                                 t.getDescricao(),
                                 t.getStatus(),

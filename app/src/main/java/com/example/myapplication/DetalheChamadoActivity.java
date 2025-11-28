@@ -1,67 +1,98 @@
 package com.example.myapplication;
 
-import com.example.myapplication.models.Resposta;
-
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.models.ComentarioResponse;
+import com.example.myapplication.models.TicketDetalhesResponse;
+import com.example.myapplication.services.ApiService;
+import com.example.myapplication.services.RetrofitClient;
+
 import java.util.ArrayList;
 import java.util.List;
 
-// Supondo que o layout se chama "activity_detalhe_chamado.xml"
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class DetalheChamadoActivity extends AppCompatActivity {
 
     private RecyclerView recyclerRespostas;
     private RespostaAdapter respostaAdapter;
-    private List<Resposta> listaDeRespostas;
+    private List<ComentarioResponse> listaDeRespostas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        RetrofitClient.reset();
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_detalhe_chamado);
 
-        // 1. Encontre o RecyclerView no seu layout
         recyclerRespostas = findViewById(R.id.recyclerRespostas);
 
-        // 2. Configure o RecyclerView
         configurarRecyclerView();
 
-        // 3. Carregue os dados
-        // (Mais tarde, você vai substituir isso pela chamada de API)
-        carregarDadosDeExemplo();
+        // Pegando o ID do ticket enviado pela outra tela
+        int ticketId = getIntent().getIntExtra("ticketId", -1);
+
+        if (ticketId == -1) {
+            Toast.makeText(this, "Erro: ticket inválido.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        carregarTicket(ticketId);
     }
 
     private void configurarRecyclerView() {
-        // Inicialize a lista (mesmo que vazia por enquanto)
         listaDeRespostas = new ArrayList<>();
-
-        // Crie o Adapter
         respostaAdapter = new RespostaAdapter(this, listaDeRespostas);
-
-        // Defina o Layout Manager (vertical)
         recyclerRespostas.setLayoutManager(new LinearLayoutManager(this));
-
-        // Conecte o Adapter ao RecyclerView
         recyclerRespostas.setAdapter(respostaAdapter);
     }
 
-    private void carregarDadosDeExemplo() {
-        // Isso é o que viria da sua API
-        Resposta r1 = new Resposta("Júlio César", "08/10/2023 11:18", "Verificar planilha por favor");
-        Resposta r2 = new Resposta("Guilherme Henrique", "08/10/2023 11:20", "Verificando");
-        Resposta r3 = new Resposta("Guilherme Henrique", "08/10/2023 11:25", "Status alterado de Aberto para Andamento");
-        Resposta r4 = new Resposta("Guilherme Henrique", "09/10/2023 12:00", "MAIS UMMMMM");
+    private void carregarTicket(int id) {
 
-        // Adicione os dados à lista
-        listaDeRespostas.add(r1);
-        listaDeRespostas.add(r2);
-        listaDeRespostas.add(r3);
-        listaDeRespostas.add(r4);
+        ApiService api = RetrofitClient.getClient(this).create(ApiService.class);
 
-        // Notifique o adapter que os dados mudaram!
-        // Isso fará a lista aparecer na tela.
-        respostaAdapter.notifyDataSetChanged();
+        Call<TicketDetalhesResponse> call = api.getTicketDetalhe(id);
+        call.enqueue(new Callback<TicketDetalhesResponse>() {
+            @Override
+            public void onResponse(Call<TicketDetalhesResponse> call, Response<TicketDetalhesResponse> response) {
+
+
+                if (!response.isSuccessful()) {
+                    Toast.makeText(DetalheChamadoActivity.this,
+                            "Erro: " + response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                TicketDetalhesResponse dados = response.body();
+
+                if (dados == null) {
+                    Toast.makeText(DetalheChamadoActivity.this,
+                            "Erro: resposta vazia.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // atualiza lista com os comentários
+                listaDeRespostas.clear();
+                listaDeRespostas.addAll(dados.comentarios); // assume getComentarios() retorna List<ComentarioResponse>
+                respostaAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<TicketDetalhesResponse> call, Throwable t) {
+                Toast.makeText(DetalheChamadoActivity.this,
+                        "Falha na conexão", Toast.LENGTH_SHORT).show();
+                Log.e("API", t.getMessage() == null ? "null" : t.getMessage());
+            }
+        });
     }
 }

@@ -2,6 +2,7 @@ package com.example.myapplication.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -13,7 +14,6 @@ public class AuthInterceptor implements Interceptor {
     private SharedPreferences prefs;
 
     public AuthInterceptor(Context context) {
-        // mesmo nome usado no login
         prefs = context.getSharedPreferences("app", Context.MODE_PRIVATE);
     }
 
@@ -21,9 +21,14 @@ public class AuthInterceptor implements Interceptor {
     public okhttp3.Response intercept(Chain chain) throws IOException {
         String token = prefs.getString("jwt", null);
 
+
+
         Request request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + token)
+                .addHeader("Authorization", "Bearer " + token.trim())
                 .build();
+        Log.e("AUTH_DEBUG", "TOKEN ENVIADO: " + token);
+        Log.e("AUTH_DEBUG", "Token enviado: Bearer " + token);
+        Log.e("AUTH_DEBUG", "URL chamada: " + chain.request().url());
 
         return chain.proceed(request);
     }

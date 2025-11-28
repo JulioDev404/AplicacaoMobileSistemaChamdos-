@@ -6,23 +6,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.models.ComentarioResponse;
+
 import java.util.List;
-import com.example.myapplication.models.Resposta;
 
 public class RespostaAdapter extends RecyclerView.Adapter<RespostaAdapter.RespostaViewHolder> {
 
     private Context context;
-    private List<Resposta> listaRespostas;
+    private List<ComentarioResponse> listaRespostas;
 
     // Construtor
-    public RespostaAdapter(Context context, List<Resposta> listaRespostas) {
+    public RespostaAdapter(Context context, List<ComentarioResponse> listaRespostas) {
         this.context = context;
         this.listaRespostas = listaRespostas;
     }
 
-    // 1. Cria o layout (ViewHolder)
     @NonNull
     @Override
     public RespostaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -30,28 +32,22 @@ public class RespostaAdapter extends RecyclerView.Adapter<RespostaAdapter.Respos
         return new RespostaViewHolder(view);
     }
 
-    // 2. Preenche o layout com os dados de uma posição específica
     @Override
     public void onBindViewHolder(@NonNull RespostaViewHolder holder, int position) {
-        Resposta resposta = listaRespostas.get(position);
+        ComentarioResponse resposta = listaRespostas.get(position);
 
-        holder.textNomeUsuario.setText(resposta.getNomeUsuario());
-        holder.textDataResposta.setText(resposta.getDataResposta());
-        holder.textComentario.setText(resposta.getComentario());
-
-        // Aqui você pode usar uma biblioteca como Glide ou Picasso para carregar
-        // a imagem do avatar a partir de uma URL, por exemplo.
-        // holder.imageAvatar.setImageResource(...);
+        // Preenche os dados
+        holder.textNomeUsuario.setText(resposta.autor);
+        holder.textDataResposta.setText(resposta.data);
+        holder.textComentario.setText(resposta.mensagem);
     }
 
-    // 3. Retorna a contagem total de itens
     @Override
     public int getItemCount() {
         return listaRespostas.size();
     }
 
-    // Classe interna que "segura" as Views do layout do item
-    public class RespostaViewHolder extends RecyclerView.ViewHolder {
+    public static class RespostaViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageAvatar;
         TextView textNomeUsuario;

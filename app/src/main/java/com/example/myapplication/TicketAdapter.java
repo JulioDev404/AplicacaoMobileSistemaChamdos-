@@ -25,6 +25,8 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         this.tickets = tickets;
     }
 
+
+
     @NonNull
     @Override
     public TicketViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,22 +43,13 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         holder.tvStatus.setText(ticket.getStatus());
         holder.tvMeta.setText(ticket.getCreatedAt() + " • " + ticket.getOwner());
 
+
+
         // <-- MUDANÇA 5: Adicionar o "ouvinte" de clique aqui
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Pega o ticket da posição clicada
-                Ticket clickedTicket = tickets.get(holder.getAdapterPosition());
-
-                // Cria a "viagem" para a tela de detalhes
-                Intent intent = new Intent(context, DetalheChamadoActivity.class);
-
-                // Anexa o ID do ticket na "viagem"
-                // (Assumindo que seu Ticket tem um método getId())
-
-                // Inicia a nova tela
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetalheChamadoActivity.class);
+            intent.putExtra("ticketId", ticket.getId()); // enviando ID do ticket
+            context.startActivity(intent);
         });
     }
 
