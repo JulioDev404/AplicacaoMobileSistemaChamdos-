@@ -32,17 +32,42 @@
 
     <!-- Floating Action Button (chatbot) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabChatbot"
+        android:id="@+id/fabMenuPrincipal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="Abrir chat"
-        app:srcCompat="@drawable/ic_chatbot"
+        android:contentDescription="Menu"
+
         app:backgroundTint="?attr/colorPrimary"
         app:borderWidth="0dp"
         app:elevation="6dp" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabLogout"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="80dp"
+        android:text="Logout"
+        android:visibility="gone"/>
+
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabNovoChamado"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="145dp"
+        android:text="Novo Chamado"
+        android:visibility="gone"/>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

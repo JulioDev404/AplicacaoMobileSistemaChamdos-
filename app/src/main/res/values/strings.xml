@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="token_salvo">"Token salvo: "</string>
+    <string-array name="prioridade_opcoes">
+        <item>Baixa</item>
+        <item>Média</item>
+        <item>Alta</item>
+        <item>Urgente</item>
+    </string-array>
 </resources>

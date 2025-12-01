@@ -21,15 +21,18 @@ public class AuthInterceptor implements Interceptor {
     public okhttp3.Response intercept(Chain chain) throws IOException {
         String token = prefs.getString("jwt", null);
 
+        Request original = chain.request();
+        Request.Builder builder = original.newBuilder();
 
+        if (token != null && !token.trim().isEmpty()) {
+            builder.addHeader("Authorization", "Bearer " + token.trim());
+            Log.e("AUTH_DEBUG", "TOKEN ENVIADO: " + token);
+        } else {
+            Log.e("AUTH_DEBUG", "SEM TOKEN — requisição sem Authorization");
+        }
 
-        Request request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + token.trim())
-                .build();
-        Log.e("AUTH_DEBUG", "TOKEN ENVIADO: " + token);
-        Log.e("AUTH_DEBUG", "Token enviado: Bearer " + token);
-        Log.e("AUTH_DEBUG", "URL chamada: " + chain.request().url());
+        Log.e("AUTH_DEBUG", "URL chamada: " + original.url());
 
-        return chain.proceed(request);
+        return chain.proceed(builder.build());
     }
 }
