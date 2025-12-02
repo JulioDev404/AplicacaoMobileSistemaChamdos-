@@ -24,13 +24,6 @@ public class AuthInterceptor implements Interceptor {
         Request original = chain.request();
         Request.Builder builder = original.newBuilder();
 
-        if (token != null && !token.trim().isEmpty()) {
-            builder.addHeader("Authorization", "Bearer " + token.trim());
-            Log.e("AUTH_DEBUG", "TOKEN ENVIADO: " + token);
-        } else {
-            Log.e("AUTH_DEBUG", "SEM TOKEN — requisição sem Authorization");
-        }
-
         Log.e("AUTH_DEBUG", "URL chamada: " + original.url());
 
         return chain.proceed(builder.build());
