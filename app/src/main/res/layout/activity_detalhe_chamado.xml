@@ -5,14 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F7FA"
+    android:background="?android:attr/colorBackground"
     tools:context=".DetalheChamadoActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
         app:title="Detalhes do Chamado"
 
         app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +47,6 @@
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/black"
                         tools:text="Testando anexo de planilha (Excel)" />
 
                     <com.google.android.material.chip.ChipGroup
@@ -128,7 +126,6 @@
 
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
-                        android:textColor="@color/design_default_color_primary"
                         tools:text="Controle-Financeiro-Pessoal.xlsx"/>
 
                 </LinearLayout>

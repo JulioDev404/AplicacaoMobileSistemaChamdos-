@@ -5,7 +5,7 @@
     android:id="@+id/mainLogin"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#0B1220"
+    android:background="?android:attr/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainLogin">
@@ -84,6 +84,7 @@
             android:layout_marginBottom="16dp">
 
             <CheckBox
+                android:id="@+id/cbLembrar"
                 android:text="Lembrar de mim"
                 android:textColor="#B0B6C3"
                 android:layout_width="wrap_content"
@@ -93,14 +94,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-
-            <TextView
-                android:text="Esqueci minha senha"
-                android:textColor="#3A6EFF"
-                android:textSize="13sp"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <Button

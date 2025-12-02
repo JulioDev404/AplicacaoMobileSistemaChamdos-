@@ -71,6 +71,9 @@ public class DetalheChamadoActivity extends AppCompatActivity {
         btnEnviarComentario = findViewById(R.id.btnEnviarComentario);
         editTextComentario = findViewById(R.id.editTextComentario);
 
+        chipStatus.setEnabled(false);
+        chipPrioridade.setEnabled(false);
+
         // configura toolbar (seta botão voltar se quiser)
         toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material);
         toolbar.setNavigationOnClickListener(v -> finish());

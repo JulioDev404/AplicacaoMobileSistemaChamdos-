@@ -5,7 +5,7 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="?android:attr/colorBackground">
 
     <!-- Toolbar simples -->
     <com.google.android.material.appbar.MaterialToolbar
@@ -39,7 +39,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="Menu"
-
+        app:srcCompat="@drawable/ic_menu_24"
+        app:maxImageSize="45dp"
         app:backgroundTint="?attr/colorPrimary"
         app:borderWidth="0dp"
         app:elevation="6dp" />
